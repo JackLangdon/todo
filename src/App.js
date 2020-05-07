@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends React.Component {
     const newItem = {
       id: 1 + Math.random(),
       value: this.state.newItem,
+      checked: false
     }
 
     // take the current list
@@ -38,6 +40,26 @@ class App extends React.Component {
     // update the state and reset the input
     this.setState({
       newItem: '',
+      list: updatedList
+    })
+  }
+
+  checkItem(id) {
+    // get the current list
+    const updatedList = [...this.state.list];
+
+    // find item index
+    const itemIndex = updatedList.findIndex((item) => {
+      return (
+        item.id === id
+      )
+    })
+
+    // toggle checked
+    updatedList[itemIndex].checked = !updatedList[itemIndex].checked;
+
+    // update the state
+    this.setState({
       list: updatedList
     })
   }
@@ -83,7 +105,12 @@ class App extends React.Component {
                   // give a unique key using the item id
                   key={item.id}
                 >
-                  {item.value}
+                  <button
+                    onClick={() => this.checkItem(item.id)}
+                    className={item.checked === true ? 'checked' : ''}
+                  >
+                    {item.value}
+                  </button>
                   <button
                     // pass item id into remove method
                     onClick={() => this.removeItem(item.id)}

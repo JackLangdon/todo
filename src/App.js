@@ -42,6 +42,23 @@ class App extends React.Component {
     })
   }
 
+  removeItem(id) {
+    // get current list
+    const currentList = [...this.state.list];
+
+    // filter out item containing the target id
+    const updatedList = currentList.filter((item) => {
+      return (
+        item.id !== id
+      )
+    })
+
+    // update the state
+    this.setState({
+      list: updatedList
+    })
+  }
+
   render() {
     return (
       <div>
@@ -59,7 +76,24 @@ class App extends React.Component {
           Add
         </button>
         <ul>
-          {/* List items go here mapped from state.list */}
+          {
+            this.state.list.map((item) => {
+              return (
+                <li
+                  // give a unique key using the item id
+                  key={item.id}
+                >
+                  {item.value}
+                  <button
+                    // pass item id into remove method
+                    onClick={() => this.removeItem(item.id)}
+                  >
+                    X
+                  </button>
+                </li>
+              )
+            })
+          }
         </ul>
       </div>
     )

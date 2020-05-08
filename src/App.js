@@ -13,6 +13,25 @@ class App extends React.Component {
     this.addItem = this.addItem.bind(this);
   }
 
+  componentDidMount() {
+    this.hydrateStateWithLocalStorage();
+  }
+
+  hydrateStateWithLocalStorage() {
+    for (let key in this.state) {
+      if (localStorage.hasOwnProperty(key)) {
+        let value = localStorage.getItem(key);
+
+        try {
+          value = JSON.parse(value);
+          this.setState({ [key]: value });
+        } catch (e) {
+          this.setState({ [key]: value })
+        }
+      }
+    }
+  }
+
   handleChange(e) {
     // watch for changes
     let newItem = e.target.value;
@@ -23,25 +42,34 @@ class App extends React.Component {
     })
   }
 
-  addItem() {
-    // create a new item object with the input
-    const newItem = {
-      id: 1 + Math.random(),
-      value: this.state.newItem,
-      checked: false
+  addItem(e) {
+    //prevent page auto refresh
+    e.preventDefault();
+
+    //require some input
+    if (this.state.newItem !== '') {
+      // create a new item object with the input
+      const newItem = {
+        id: 1 + Math.random(),
+        value: this.state.newItem,
+        checked: false
+      }
+
+      // take the current list
+      const updatedList = [...this.state.list];
+
+      // add the new item object to the updated list
+      updatedList.push(newItem);
+
+      // update the state and reset the input
+      this.setState({
+        newItem: '',
+        list: updatedList
+      })
+
+      // update local storage
+      localStorage.setItem('list', JSON.stringify(updatedList));
     }
-
-    // take the current list
-    const updatedList = [...this.state.list];
-
-    // add the new item object to the updated list
-    updatedList.push(newItem);
-
-    // update the state and reset the input
-    this.setState({
-      newItem: '',
-      list: updatedList
-    })
   }
 
   checkItem(id) {
@@ -62,6 +90,9 @@ class App extends React.Component {
     this.setState({
       list: updatedList
     })
+
+    // update local storage
+    localStorage.setItem('list', JSON.stringify(updatedList));
   }
 
   removeItem(id) {
@@ -79,24 +110,32 @@ class App extends React.Component {
     this.setState({
       list: updatedList
     })
+
+    // update local storage
+    localStorage.setItem('list', JSON.stringify(updatedList));
   }
 
   render() {
     return (
       <div>
         <h1>ToDo</h1>
-        <input
-          type="text"
-          placeholder="Type new item here"
-          value={this.state.newItem}
-          onChange={this.handleChange}
-          autoFocus
-        />
-        <button
-          onClick={this.addItem}
+        <form
+          onSubmit={this.addItem}
         >
-          Add
-        </button>
+          <input
+            type="text"
+            placeholder="Type new item here"
+            value={this.state.newItem}
+            onChange={this.handleChange}
+            autoFocus
+          />
+          <button
+            type="submit"
+            onClick={this.addItem}
+          >
+            Add
+          </button>
+        </form>
         <ul>
           {
             this.state.list.map((item) => {

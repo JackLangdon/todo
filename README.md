@@ -14,7 +14,6 @@ The classic todo list application.
     - clicking anywhere on the list item to check it off
     - realistic button effects
 
-**-------------------------------------------------**
 
 ## Available Scripts
 

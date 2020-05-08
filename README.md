@@ -1,5 +1,21 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Summary
+
+The classic todo list application.
+
+- storing the list in local storage to maintain the state after refreshing or closing the browser
+- adding new items
+- checking off completed items
+- removing items
+- improved UI for ease of use
+    - autofocus on input
+    - hitting return key to add item
+    - clicking anywhere on the list item to check it off
+    - realistic button effects
+
+**-------------------------------------------------**
+
 ## Available Scripts
 
 In the project directory, you can run:

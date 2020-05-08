@@ -117,10 +117,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>ToDo</h1>
+      <div className="todo">
+        <h1 className="title">ToDo</h1>
         <form
           onSubmit={this.addItem}
+          className="input-form"
         >
           <input
             type="text"
@@ -128,31 +129,34 @@ class App extends React.Component {
             value={this.state.newItem}
             onChange={this.handleChange}
             autoFocus
+            className="input"
           />
           <button
             type="submit"
             onClick={this.addItem}
+            className="btn btn-add"
           >
             Add
           </button>
         </form>
-        <ul>
+        <ul className="list">
           {
             this.state.list.map((item) => {
               return (
                 <li
                   // give a unique key using the item id
                   key={item.id}
+                  className="list-item"
                 >
                   <button
                     onClick={() => this.checkItem(item.id)}
-                    className={item.checked === true ? 'checked' : ''}
+                    className={item.checked === true ? 'checked btn btn-item' : 'btn btn-item'}
                   >
                     {item.value}
                   </button>
                   <button
-                    // pass item id into remove method
                     onClick={() => this.removeItem(item.id)}
+                    className="btn btn-remove"
                   >
                     X
                   </button>
